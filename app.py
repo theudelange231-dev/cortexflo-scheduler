@@ -26,15 +26,11 @@ if driver_file and shift_file:
         day = row['Day']
 
         # Check which drivers are available today
-        available_drivers = drivers_df[
-            drivers_df['Available Days'].str.split().apply(lambda x: day in x)
-        ]
+        available_drivers = drivers_df[drivers_df['Available Days'].str.split().apply(lambda x: day in x)]
 
         # Avoid assigning same driver twice on same day consecutively
         if day in last_driver_per_day:
-            available_drivers = available_drivers[
-                available_drivers['Driver'] != last_driver_per_day[day]
-            ]
+            available_drivers = available_drivers[available_drivers['Driver'] != last_driver_per_day[day]]
 
         # Assign driver
         if not available_drivers.empty:
@@ -59,4 +55,4 @@ if driver_file and shift_file:
         mime='text/csv'
     )
 
-    st.success("Schedule generated! Respects availability, max 10-hour shifts, and avoids back-to-back assignments.")
+    st.success("Sc
