@@ -1,0 +1,6 @@
+Driver;Max Hours/Day;Available Days
+John;10;"Mon,Tue,Wed"
+Mary;10;"Mon,Thu,Fri"
+Peter;10;"Tue,Wed,Thu"
+Aisha;10;All
+Tom;10;"Mon,Wed,Fri"
