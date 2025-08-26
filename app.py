@@ -25,7 +25,7 @@ if driver_file and shift_file:
     for idx, row in shifts_df.iterrows():
         day = row['Day']
 
-        # Check which drivers are available today
+        # Check which drivers are available today (single line, no line breaks in brackets)
         available_drivers = drivers_df[drivers_df['Available Days'].str.split().apply(lambda x: day in x)]
 
         # Avoid assigning same driver twice on same day consecutively
@@ -37,11 +37,21 @@ if driver_file and shift_file:
             min_hours = available_drivers['Assigned Hours'].min()
             candidates = available_drivers[available_drivers['Assigned Hours'] == min_hours]
             chosen_driver = random.choice(candidates['Driver'].tolist())
-
             shifts_df.at[idx, 'Driver'] = chosen_driver
             drivers_df.loc[drivers_df['Driver'] == chosen_driver, 'Assigned Hours'] += 10
             last_driver_per_day[day] = chosen_driver
         else:
             shifts_df.at[idx, 'Driver'] = "No available driver"
 
-    st.sub
+    st.subheader("Generated Schedule")
+    st.dataframe(shifts_df)
+
+    # Download button
+    st.download_button(
+        label="Download Schedule",
+        data=shifts_df.to_csv(index=False).encode('utf-8'),
+        file_name='driver_schedule.csv',
+        mime='text/csv'
+    )
+
+    st.success("Schedule generated! Respects availability, max 10-hour shifts, and avoids back-to-back assignments.")
