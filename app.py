@@ -12,15 +12,18 @@ if driver_file and shift_file:
     # Read driver CSV, remove BOM/extra spaces
     drivers_df = pd.read_csv(driver_file, encoding='utf-8-sig')
     drivers_df.columns = drivers_df.columns.str.strip()
+    if 'Driver' not in drivers_df.columns:
+        drivers_df = drivers_df.rename(columns={drivers_df.columns[0]: 'Driver'})
     drivers_df['Assigned Hours'] = 0
 
     # Read shift CSV, remove BOM/extra spaces
     shifts_df = pd.read_csv(shift_file, encoding='utf-8-sig')
     shifts_df.columns = shifts_df.columns.str.strip()
+    if 'Day' not in shifts_df.columns:
+        shifts_df = shifts_df.rename(columns={shifts_df.columns[0]: 'Day'})
+    if 'Shift' not in shifts_df.columns:
+        shifts_df = shifts_df.rename(columns={shifts_df.columns[1]: 'Shift'})
     shifts_df['Driver'] = ""
-
-    # Debug: show actual columns (optional)
-    # st.write("Shift columns detected:", shifts_df.columns.tolist())
 
     # Track last driver per day to avoid back-to-back shifts
     last_driver_per_day = {}
@@ -57,6 +60,5 @@ if driver_file and shift_file:
     )
 
     st.success("Schedule generated! Respects availability, max 10-hour shifts, and avoids back-to-back assignments.")
-
 
 
