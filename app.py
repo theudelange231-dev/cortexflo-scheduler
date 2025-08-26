@@ -44,15 +44,4 @@ if driver_file and shift_file:
         else:
             shifts_df.at[idx, 'Driver'] = "No available driver"
 
-    st.subheader("Generated Schedule")
-    st.dataframe(shifts_df)
-
-    # Download button
-    st.download_button(
-        label="Download Schedule",
-        data=shifts_df.to_csv(index=False).encode('utf-8'),
-        file_name='driver_schedule.csv',
-        mime='text/csv'
-    )
-
-    st.success("Sc
+    st.sub
